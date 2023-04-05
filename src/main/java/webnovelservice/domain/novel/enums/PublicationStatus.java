@@ -1,4 +1,4 @@
-package com.hwang.webnovelservice.domain.novel.enums;
+package webnovelservice.domain.novel.enums;
 
 public enum PublicationStatus {
     SERIALIZED,

@@ -1,4 +1,4 @@
-package com.hwang.webnovelservice.domain.novel.application;
+package webnovelservice.domain.novel.application;
 
 import org.springframework.stereotype.Service;
 

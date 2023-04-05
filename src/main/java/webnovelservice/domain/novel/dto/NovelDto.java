@@ -1,17 +1,17 @@
-package com.hwang.webnovelservice.domain.novel;
+package webnovelservice.domain.novel.dto;
 
-import com.hwang.webnovelservice.domain.novel.enums.PublicationStatus;
+import webnovelservice.domain.novel.enums.PublicationStatus;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 
-public record Novel(
+public record NovelDto(
         Long novelId,
         String title,
         String genre,
         String description,
         LocalDate publicationDate,
         PublicationStatus publicationStatus,
-        LocalDateTime createAt
+        LocalDateTime createdAt
 ) {
 }
