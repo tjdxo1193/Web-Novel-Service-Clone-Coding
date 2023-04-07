@@ -12,15 +12,13 @@ public class UserWriteService {
     final private UserDao userDao;
 
     public User create(RegisterUserCommand command) {
-        var member = User.builder()
+        var user = User.builder()
                 .email(command.email())
-                .email(command.email())
-                .email(command.email())
-                .email(command.email())
-                .email(command.email())
+                .userName(command.userName())
                 .birthday(command.birthday())
+                .password(command.password())
                 .build();
-        var savedUser = userDao.save(member);
+        var savedUser = userDao.save(user);
 
         return savedUser;
     }

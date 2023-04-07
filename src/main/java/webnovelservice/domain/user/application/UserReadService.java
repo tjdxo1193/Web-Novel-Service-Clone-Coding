@@ -16,6 +16,11 @@ public class UserReadService {
     }
 
     public ResponseUserDto toDto(User user) {
-        return null;
+        return new ResponseUserDto(
+                user.getUserId(),
+                user.getEmail(),
+                user.getUserName(),
+                user.getBirthday(),
+                user.getCreatedAt());
     }
 }

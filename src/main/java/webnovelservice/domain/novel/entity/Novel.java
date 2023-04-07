@@ -2,24 +2,32 @@ package webnovelservice.domain.novel.entity;
 
 import lombok.Builder;
 import lombok.Getter;
+import webnovelservice.domain.novel.dto.NovelDto;
+import webnovelservice.domain.novel.enums.GenreDiv;
+import webnovelservice.domain.novel.enums.PublicationStatus;
+
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.util.Objects;
 
 @Getter
 public class Novel {
-    final private String novelId;
+    final private Long novelId;
     final private String title;
-    final private String genre;
-    final private String description;
-    final private String publicationDate;
-    final private String publicationStatus;
-    final private String createAt;
+    final private GenreDiv genre;
+    private String description;
+    final private LocalDate publicationDate;
+    final private PublicationStatus publicationStatus;
+    final private LocalDateTime createdAt;
+
     @Builder
-    public Novel(String novelId, String title, String genre, String description, String publicationDate, String publicationStatus, String createAt) {
+    public Novel(Long novelId, String title, GenreDiv genre, String description, LocalDate publicationDate, PublicationStatus publicationStatus, LocalDateTime createdAt) {
         this.novelId = novelId;
-        this.title = title;
+        this.title = Objects.requireNonNull(title);
         this.genre = genre;
-        this.description = description;
-        this.publicationDate = publicationDate;
+        this.description = Objects.requireNonNull(description);
+        this.publicationDate = Objects.requireNonNull(publicationDate);
         this.publicationStatus = publicationStatus;
-        this.createAt = createAt;
+        this.createdAt = createdAt == null ? LocalDateTime.now() : createdAt;
     }
 }

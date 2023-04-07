@@ -4,4 +4,5 @@ public enum PublicationStatus {
     SERIALIZED,
     COMPLETE,
     PAUSE,
+    DEFAULT,
 }

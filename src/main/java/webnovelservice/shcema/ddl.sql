@@ -82,7 +82,8 @@ CREATE TABLE NOVEL_EPISODE (
 CREATE TABLE POINT (
                        POINT_IDX INT NOT NULL AUTO_INCREMENT primary key COMMENT '포인트 인덱스',
                        PRICE	BIGINT	NOT NULL COMMENT '가격',
-                       POINT	BIGINT	NOT NULL COMMENT '포인트'
+                       POINT	BIGINT	NOT NULL COMMENT '포인트',
+                       TXT
 );
 
 CREATE TABLE NOVEL_PRICE (
