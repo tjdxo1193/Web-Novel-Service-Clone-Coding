@@ -11,6 +11,7 @@ import webnovelservice.domain.user.dto.RegisterUserCommand;
 
 import java.util.List;
 import java.util.Locale;
+import java.util.Map;
 
 @Service
 @RequiredArgsConstructor
@@ -28,12 +29,26 @@ public class NovelWriteService {
                 .publicationStatus(PublicationStatus.SERIALIZED)
                 .build();
 
+        novelDao.saveNovel(novel);
         return novel;
     }
 
-    public void update(Long novelId, NovelDto novelDto) {
-        var novel = novelDao.findByNovelId(novelId);
-        novel.chanageNovelCover(novelDto);
-        novelDao.update(novel);
+    public Novel update(Long novelId, NovelDto novelDto) {
+        var novel = Novel.builder()
+                .novelId(novelId)
+                .title(novelDto.title())
+                .genre(novelDto.genre())
+                .description(novelDto.description())
+                .publicationDate(novelDto.publicationDate())
+                .publicationStatus(PublicationStatus.SERIALIZED)
+                .build();
+
+        novelDao.updateNovel(novel);
+
+        return novel;
+    }
+
+    public void delete(Long novelId) {
+        novelDao.deleteNovel(novelId);
     }
 }

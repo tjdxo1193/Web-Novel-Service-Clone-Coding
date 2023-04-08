@@ -12,7 +12,8 @@ public class UserReadService {
     final private UserDao userDao;
 
     public ResponseUserDto getUser(Long userId) {
-        return null;
+        var user = userDao.findByUserId(userId);
+        return toDto(user);
     }
 
     public ResponseUserDto toDto(User user) {

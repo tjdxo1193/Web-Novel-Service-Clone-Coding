@@ -3,15 +3,9 @@ package webnovelservice.domain.novel.application;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import webnovelservice.domain.novel.dao.NovelDao;
-import webnovelservice.domain.novel.dto.NovelDto;
-import webnovelservice.domain.novel.dto.NovelRequestForPaging;
+import webnovelservice.domain.novel.dto.NovelRequest;
 import webnovelservice.domain.novel.dto.ResponseNovelDto;
 import webnovelservice.domain.novel.entity.Novel;
-import webnovelservice.domain.novel.enums.PublicationStatus;
-import webnovelservice.domain.user.dto.ResponseUserDto;
-
-import java.time.LocalDate;
-import java.time.LocalDateTime;
 import java.util.List;
 
 @Service
@@ -25,7 +19,7 @@ public class NovelReadService {
         return toDto(novel);
     }
 
-    public List<ResponseNovelDto> findByAuthorAndTitle(NovelRequestForPaging params) {
+    public List<ResponseNovelDto> findByAuthorAndTitle(NovelRequest params) {
 
         var novels = novelDao.findByAuthorAndTitle(params);
 
@@ -37,6 +31,7 @@ public class NovelReadService {
         return new ResponseNovelDto(
                 novel.getNovelId(),
                 novel.getTitle(),
+                novel.getAuthor(),
                 novel.getGenre(),
                 novel.getDescription(),
                 novel.getPublicationDate(),

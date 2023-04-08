@@ -13,6 +13,7 @@ import java.time.LocalDateTime;
 public class NovelRequest extends Paging {
     private Long novelId;
     private String title;
+    private String author;
     private String genre;
     private String description;
     @DateTimeFormat(iso = DateTimeFormat.ISO.DATE)

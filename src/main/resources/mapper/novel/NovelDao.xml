@@ -2,23 +2,65 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
   "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="webnovelservice.domain.novel.dao.NovelDao">
-  <select id="" resultType="">
+  <select id="findByNovelId" resultType="Novel" parameterType="Long">
+    SELECT NOVEL_ID
+         , TITLE
+         , GENRE
+         , DESCRIPTION
+         , PUBLICATION_DATE
+         , PUBLICATION_STATUS
+         , CREATED_AT
+    FROM NOVEL WHERE NOVEL_ID = #{novelId}
   </select>
 
-  <select id="" resultType="">
+  <select id="findByAuthorAndTitle" resultType="Novel" parameterType="NovelRequest">
+    SELECT NOVEL_ID
+         , TITLE
+         , GENRE
+         , DESCRIPTION
+         , PUBLICATION_DATE
+         , PUBLICATION_STATUS
+         , CREATED_AT
+    FROM NOVEL
+    WHERE 1 = 1
+        <if test="">
+            AND TITLE = #{title}
+        </if>
+        <if test="">
+            AND AU = #{title}
+        </if>
+
   </select>
 
-  <select id="" resultType="">
-  </select>
-
-  <insert id="">
-
+  <insert id="saveNovel" parameterType="Novel" useGeneratedKeys="true" keyProperty="novelId">
+    INSERT INTO NOVEL
+    (
+    TITLE
+    , GENRE
+    , DESCRIPTION
+    , PUBLICATION_DATE
+    , PUBLICATION_STATUS
+    , CREATED_AT
+    ) VALUES
+          ( #{title}
+          , #{genre}
+          , #{description}
+          , #{publicationDate}
+          , #{publicationStatus}
+          , #{createdAt} )
   </insert>
 
-  <update id="">
+  <update id="updateNovel" parameterType="Novel">
+    UPDATE NOVEL SET
+                TITLE = #{title}
+              , GENRE = #{genre}
+              , DESCRIPTION = #{description}
+              , PUBLICATION_STATUS = #{publicationStatus}
+              , PUBLICATION_DATE = #{publicationDate}
+    WHERE NOVEL_ID = #{novelId}
   </update>
 
-  <delete id="">
-
+  <delete id="deleteNovel" parameterType="Long">
+    DELETE FROM NOVEL WHERE NOVEL_ID = #{novelId}
   </delete>
 </mapper>

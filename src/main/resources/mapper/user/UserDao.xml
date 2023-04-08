@@ -1,8 +1,23 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
   "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="webnovelservice.domain.novel.dao.NovelDao">
-  <select id="" resultType="">
+<mapper namespace="webnovelservice.domain.user.dao.UserDao">
 
+  <select id="findByUserId" resultType="USER" parameterType="USER">
+    SELECT USER_ID, EMAIL, PASSWORD, USER_NAME, BIRTHDAY, CREATED_AT FROM USER WHERE USER_ID = #{userId}
   </select>
+
+  <insert id="saveUser" parameterType="USER" useGeneratedKeys="true" keyProperty="userId">
+    INSERT INTO USER (EMAIL, PASSWORD, USER_NAME, BIRTHDAY, CREATED_AT)
+    VALUES (#{email},#{password},#{userName},#{birthday},#{createdAt})
+  </insert>
+
+  <update id="updateUser" parameterType="USER">
+    UPDATE USER
+    SET USER_NAME = #{userName}
+      , EMAIL     = #{email}
+      , BIRTHDAY = #{birthday}
+    WHERE USER_ID = #{userId}
+  </update>
+
 </mapper>

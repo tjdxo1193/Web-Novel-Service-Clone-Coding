@@ -18,8 +18,8 @@ public class UserWriteService {
                 .birthday(command.birthday())
                 .password(command.password())
                 .build();
-        var savedUser = userDao.save(user);
+        userDao.saveUser(user);
 
-        return savedUser;
+        return user;
     }
 }

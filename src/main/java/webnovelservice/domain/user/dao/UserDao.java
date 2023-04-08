@@ -4,5 +4,7 @@ import webnovelservice.domain.user.entity.User;
 
 public interface UserDao {
 
-    User save(User member);
+    User saveUser(User member);
+    void updateUser(User member);
+    User findByUserId(Long userId);
 }
