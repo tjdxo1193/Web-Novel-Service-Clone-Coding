@@ -10,6 +10,7 @@ import webnovelservice.domain.novel.dto.NovelDto;
 import webnovelservice.domain.novel.dto.NovelRequest;
 import webnovelservice.domain.novel.dto.RegisterNovelCommand;
 import webnovelservice.domain.novel.dto.ResponseNovelDto;
+import webnovelservice.global.common.model.CommonResponse;
 
 import java.util.List;
 
@@ -48,9 +49,9 @@ public class NovelController {
     // 소설 목록 전체 조회, 페이징
     @Operation(summary = "소설 커버 삭제")
     @DeleteMapping("/{novelId}/delete")
-    public ResponseEntity<ResponseNovelDto> delete(@PathVariable Long novelId) {
-        var novel = novelWriteService.delete(novelId);
-        return ResponseEntity.ok(novelReadService.toDto(novel));
+    public ResponseEntity<CommonResponse> delete(@PathVariable Long novelId) {
+        novelWriteService.delete(novelId);
+        return ResponseEntity.ok(new CommonResponse());
     }
 
     // 일반적인 검색, 작가명, 작품명으로 조회
