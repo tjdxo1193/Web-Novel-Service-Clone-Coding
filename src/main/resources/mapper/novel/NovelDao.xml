@@ -14,7 +14,8 @@
     FROM NOVEL WHERE NOVEL_ID = #{novelId}
   </select>
 
-  <select id="findByAuthorAndTitle" resultType="Novel" parameterType="NovelRequest">
+  <!-- 페이징 적용 -->
+  <select id="findByAuthorAndTitle" resultType="Novel" parameterType="map">
     SELECT NOVEL_ID
          , TITLE
          , GENRE
@@ -25,16 +26,20 @@
          , CREATED_AT
     FROM NOVEL
     WHERE 1 = 1
-        <if test="title != null and title != ''">
-            AND TITLE LIKE ('%'+#{title}+'%')
+        <if test="key != null">
+          AND NOVEL_ID <![CDATA[<]]> #{key}
         </if>
-        <if test="author != null and author != ''">
-            AND AUTHOR LIKE ('%'+#{author}+'%')
+        <if test="novelRequest.title != null and novelRequest.title != ''">
+            AND TITLE LIKE ('%'+#{novelRequest.title}+'%')
         </if>
-    ORDER BY CREATED_AT DESC
+        <if test="novelRequest.author != null and novelRequest.author != ''">
+            AND AUTHOR LIKE ('%'+#{novelRequest.author}+'%')
+        </if>
+    ORDER BY NOVEL_ID DESC
+    LIMIT #{size}
   </select>
 
-   <select id="findByMostViews" resultType="Novel" parameterType="NovelRequest">
+    <select id="findByMostViews" resultType="Novel" parameterType="NovelRequest">
         SELECT
             NL.NOVEL_ID
             , NL.TITLE

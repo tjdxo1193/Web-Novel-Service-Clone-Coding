@@ -6,6 +6,8 @@ import webnovelservice.domain.novel.dao.NovelDao;
 import webnovelservice.domain.novel.dto.NovelRequest;
 import webnovelservice.domain.novel.dto.ResponseNovelDto;
 import webnovelservice.domain.novel.entity.Novel;
+import webnovelservice.global.util.CursorRequest;
+import webnovelservice.global.util.PageCursor;
 import java.util.List;
 
 @Service
@@ -19,13 +21,13 @@ public class NovelReadService {
         return toDto(novel);
     }
 
-    public List<ResponseNovelDto> getNovels(NovelRequest params) {
-
-        var novels = novelDao.findByAuthorAndTitle(params);
-
-        return novels.stream()
+    public PageCursor<ResponseNovelDto> getNovels(CursorRequest<NovelRequest> cursorRequest) {
+        var novels = novelDao.findByAuthorAndTitle(cursorRequest.r(), cursorRequest.key(), cursorRequest.size());
+        var nextKey = novels.stream().mapToLong(Novel::getNovelId).min().orElse(CursorRequest.NONE_KEY);
+        return new PageCursor<>(cursorRequest.next(nextKey),
+                novels.stream()
                 .map(this::toDto)
-                .toList();
+                .toList());
     }
 
     public ResponseNovelDto toDto(Novel novel) {

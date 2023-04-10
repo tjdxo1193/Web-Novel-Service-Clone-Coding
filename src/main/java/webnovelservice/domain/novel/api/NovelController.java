@@ -12,6 +12,8 @@ import webnovelservice.domain.novel.dto.NovelRequest;
 import webnovelservice.domain.novel.dto.RegisterNovelCommand;
 import webnovelservice.domain.novel.dto.ResponseNovelDto;
 import webnovelservice.global.common.model.CommonResponse;
+import webnovelservice.global.util.CursorRequest;
+import webnovelservice.global.util.PageCursor;
 
 import java.util.List;
 @Tag(name = "소설 API")
@@ -55,11 +57,11 @@ public class NovelController {
         return ResponseEntity.ok(new CommonResponse());
     }
 
-    // 일반적인 검색, 작가명, 작품명으로 조회
+    // 일반적인 검색, 작가명, 작품명으로 조회 # 페이징 필요
     @Operation(summary = "소설 목록 조회 - 작가명, 작품명")
     @GetMapping("/novels-by-basic")
-    public ResponseEntity<List<ResponseNovelDto>> getNovels(@RequestBody NovelRequest params) {
-        return ResponseEntity.ok(novelReadService.getNovels(params));
+    public ResponseEntity<PageCursor<ResponseNovelDto>> getNovels(@RequestBody CursorRequest<NovelRequest> cursorRequest) {
+        return ResponseEntity.ok(novelReadService.getNovels(cursorRequest));
     }
 
     // 이달의 화제작 조회
