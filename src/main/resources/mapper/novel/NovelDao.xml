@@ -6,6 +6,7 @@
     SELECT NOVEL_ID
          , TITLE
          , GENRE
+         , AUTHOR
          , DESCRIPTION
          , PUBLICATION_DATE
          , PUBLICATION_STATUS
@@ -17,26 +18,53 @@
     SELECT NOVEL_ID
          , TITLE
          , GENRE
+         , AUTHOR
          , DESCRIPTION
          , PUBLICATION_DATE
          , PUBLICATION_STATUS
          , CREATED_AT
     FROM NOVEL
     WHERE 1 = 1
-        <if test="">
-            AND TITLE = #{title}
+        <if test="title != null and title != ''">
+            AND TITLE LIKE ('%'+#{title}+'%')
         </if>
         <if test="">
-            AND AU = #{title}
+            AND AUTHOR LIKE ('%'+#{author}+'%')
         </if>
 
   </select>
 
-  <insert id="saveNovel" parameterType="Novel" useGeneratedKeys="true" keyProperty="novelId">
+   <select id="findByMostViews" resultType="Novel" parameterType="NovelRequest">
+        SELECT NOVEL_ID
+        , TITLE
+        , GENRE
+        , AUTHOR
+        , DESCRIPTION
+        , PUBLICATION_DATE
+        , PUBLICATION_STATUS
+        , CREATED_AT
+        FROM NOVEL
+   </select>
+
+    <select id="findByMostSales" resultType="Novel" parameterType="NovelRequest">
+        SELECT
+            NOVEL_ID
+             , TITLE
+             , GENRE
+             , AUTHOR
+             , DESCRIPTION
+             , PUBLICATION_DATE
+             , PUBLICATION_STATUS
+             , CREATED_AT
+        FROM NOVEL
+    </select>
+
+    <insert id="saveNovel" parameterType="Novel" useGeneratedKeys="true" keyProperty="novelId">
     INSERT INTO NOVEL
     (
     TITLE
     , GENRE
+    , AUTHOR
     , DESCRIPTION
     , PUBLICATION_DATE
     , PUBLICATION_STATUS
@@ -44,6 +72,7 @@
     ) VALUES
           ( #{title}
           , #{genre}
+          , #{author}
           , #{description}
           , #{publicationDate}
           , #{publicationStatus}
@@ -54,6 +83,7 @@
     UPDATE NOVEL SET
                 TITLE = #{title}
               , GENRE = #{genre}
+              , AUTHOER = #{author}
               , DESCRIPTION = #{description}
               , PUBLICATION_STATUS = #{publicationStatus}
               , PUBLICATION_DATE = #{publicationDate}

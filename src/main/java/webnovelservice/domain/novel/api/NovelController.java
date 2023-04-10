@@ -31,10 +31,10 @@ public class NovelController {
 
     @Operation(summary = "소설 커버 조회")
     @GetMapping("/{novelId}")
-    public ResponseEntity<ResponseNovelDto> findByNovelId(@RequestBody Long novelId) {
-        return ResponseEntity.ok(novelReadService.findByNovelId(novelId));
+    public ResponseEntity<ResponseNovelDto> getNovel(@PathVariable Long novelId) {
+        return ResponseEntity.ok(novelReadService.getNovel(novelId));
     }
-    
+
     @Operation(summary = "소설 커버 수정")
     @PutMapping("/{novelId}/update")
     public ResponseEntity<ResponseNovelDto> update(
@@ -57,20 +57,22 @@ public class NovelController {
     // 일반적인 검색, 작가명, 작품명으로 조회
     @Operation(summary = "소설 목록 조회 - 작가명, 작품명")
     @GetMapping("/novels-by-basic")
-    public ResponseEntity<List<ResponseNovelDto>> findByAuthorAndTitle(@RequestBody NovelRequest params) {
-        return ResponseEntity.ok(novelReadService.findByAuthorAndTitle(params));
+    public ResponseEntity<List<ResponseNovelDto>> getNovels(@RequestBody NovelRequest params) {
+        return ResponseEntity.ok(novelReadService.getNovels(params));
     }
 
     // 이달의 화제작 조회
-
-
-    // 소설
+    @Operation(summary = "이달의 화제작 목록 조회 - TOP-20")
+    @GetMapping("/this-month-novel")
+    public ResponseEntity<List<ResponseNovelDto>> getThisMonthNovels(@RequestBody NovelRequest params) {
+        return ResponseEntity.ok(novelReadService.getThisMonthNovels(params));
+    }
 
 
     // 베스트 셀러 소설 -
-
-
-    // 화제의 신작 소설 -
-
-
+    @Operation(summary = "베스트 셀러 목록 조회 - TOP-20")
+    @GetMapping("/best-seller-novel")
+    public ResponseEntity<List<ResponseNovelDto>> getBestSellerNovels(@RequestBody NovelRequest params) {
+        return ResponseEntity.ok(novelReadService.getBestSellerNovels(params));
+    }
 }

@@ -14,12 +14,12 @@ public class NovelReadService {
 
     final private NovelDao novelDao;
 
-    public ResponseNovelDto findByNovelId(Long novelId) {
+    public ResponseNovelDto getNovel(Long novelId) {
         var novel = novelDao.findByNovelId(novelId);
         return toDto(novel);
     }
 
-    public List<ResponseNovelDto> findByAuthorAndTitle(NovelRequest params) {
+    public List<ResponseNovelDto> getNovels(NovelRequest params) {
 
         var novels = novelDao.findByAuthorAndTitle(params);
 
@@ -27,6 +27,7 @@ public class NovelReadService {
                 .map(this::toDto)
                 .toList();
     }
+
     public ResponseNovelDto toDto(Novel novel) {
         return new ResponseNovelDto(
                 novel.getNovelId(),
@@ -39,4 +40,19 @@ public class NovelReadService {
                 novel.getCreatedAt());
     }
 
+    public List<ResponseNovelDto> getThisMonthNovels(NovelRequest params) {
+        var novels = novelDao.findByMostViews(params);
+
+        return novels.stream()
+                .map(this::toDto)
+                .toList();
+    }
+
+    public List<ResponseNovelDto> getBestSellerNovels(NovelRequest params) {
+        var novels = novelDao.findByMostSales(params);
+
+        return novels.stream()
+                .map(this::toDto)
+                .toList();
+    }
 }

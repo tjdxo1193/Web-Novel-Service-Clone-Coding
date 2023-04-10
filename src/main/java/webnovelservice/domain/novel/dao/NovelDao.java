@@ -8,13 +8,11 @@ import java.util.List;
 
 @Mapper
 public interface NovelDao {
-
     Novel findByNovelId(Long novelId);
     List<Novel> findByAuthorAndTitle(NovelRequest params);
-
+    List<Novel> findByMostViews(NovelRequest params);
+    List<Novel> findByMostSales(NovelRequest params);
     void updateNovel(Novel novel);
-
     void deleteNovel(Long novelId);
-
     Long saveNovel(Novel novel);
 }

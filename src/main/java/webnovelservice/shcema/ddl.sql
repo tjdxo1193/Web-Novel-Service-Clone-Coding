@@ -6,7 +6,7 @@ CREATE TABLE USER (
                       PASSWORD	varchar(100)	NOT NULL  COMMENT '비밀번호',
                       USER_NAME	varchar(40)	NULL  COMMENT '이름',
                       BIRTHDAY	DATE	NULL  COMMENT '생일',
-                      CREATE_AT	datetime default (now()) COMMENT '유저 생성일'
+                      CREATED_AT	datetime default (now()) COMMENT '유저 생성일'
 );
 
 CREATE TABLE LOGIN_HISTORY (
@@ -23,7 +23,7 @@ CREATE TABLE NOVEL (
                        DESCRIPTION	VARCHAR(500) NULL COMMENT '설명_줄거리',
                        PUBLICATION_DATE	DATE NULL COMMENT '연재일자',
                        PUBLICATION_STATUS VARCHAR(10) NULL COMMENT '연재 상태',
-                       CREATE_AT	datetime default (now()) COMMENT '소설 생성일'
+                       CREATED_AT	datetime default (now()) COMMENT '소설 생성일'
 );
 
 CREATE TABLE FAVORITE (
@@ -82,8 +82,7 @@ CREATE TABLE NOVEL_EPISODE (
 CREATE TABLE POINT (
                        POINT_IDX INT NOT NULL AUTO_INCREMENT primary key COMMENT '포인트 인덱스',
                        PRICE	BIGINT	NOT NULL COMMENT '가격',
-                       POINT	BIGINT	NOT NULL COMMENT '포인트',
-                       TXT
+                       POINT	BIGINT	NOT NULL COMMENT '포인트'
 );
 
 CREATE TABLE NOVEL_PRICE (

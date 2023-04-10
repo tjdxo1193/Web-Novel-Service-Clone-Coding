@@ -7,4 +7,11 @@ import org.springframework.web.bind.annotation.*;
 @RequestMapping("favorite")
 @RequiredArgsConstructor
 public class FavoriteController {
+
+    // 내 선호작 조회
+
+    // 내 선호작 추가
+
+    // 내 선호작 삭제
+
 }
