@@ -28,35 +28,52 @@
         <if test="title != null and title != ''">
             AND TITLE LIKE ('%'+#{title}+'%')
         </if>
-        <if test="">
+        <if test="author != null and author != ''">
             AND AUTHOR LIKE ('%'+#{author}+'%')
         </if>
-
+    ORDER BY CREATED_AT DESC
   </select>
 
    <select id="findByMostViews" resultType="Novel" parameterType="NovelRequest">
-        SELECT NOVEL_ID
-        , TITLE
-        , GENRE
-        , AUTHOR
-        , DESCRIPTION
-        , PUBLICATION_DATE
-        , PUBLICATION_STATUS
-        , CREATED_AT
-        FROM NOVEL
+        SELECT
+            NL.NOVEL_ID
+            , NL.TITLE
+            , NL.GENRE
+            , NL.AUTHOR
+            , NL.DESCRIPTION
+            , NL.PUBLICATION_DATE
+            , NL.PUBLICATION_STATUS
+            , NL.CREATED_AT
+            , VS.TOTAL_VIEW_COUNT
+        FROM NOVEL NL
+        LEFT JOIN (
+            SELECT SUM(VIEW_COUNT) AS TOTAL_VIEW_COUNT, NOVEL_ID
+            FROM VIEWS
+            GROUP BY NOVEL_ID) VS ON NL.NOVEL_ID = VS.NOVEL_ID
+        ORDER BY TOTAL_VIEW_COUNT
+        LIMIT #{size}
+        OFFSET 0
    </select>
 
     <select id="findByMostSales" resultType="Novel" parameterType="NovelRequest">
         SELECT
-            NOVEL_ID
-             , TITLE
-             , GENRE
-             , AUTHOR
-             , DESCRIPTION
-             , PUBLICATION_DATE
-             , PUBLICATION_STATUS
-             , CREATED_AT
-        FROM NOVEL
+            NL.NOVEL_ID
+             , NL.TITLE
+             , NL.GENRE
+             , NL.AUTHOR
+             , NL.DESCRIPTION
+             , NL.PUBLICATION_DATE
+             , NL.PUBLICATION_STATUS
+             , NL.CREATED_AT
+             , OWN.TOTAL_SALES
+        FROM NOVEL NL
+        LEFT JOIN (
+            SELECT COUNT(OWNED_IDX) AS TOTAL_SALES, NOVEL_ID
+            FROM OWNED_NOVEL
+            GROUP BY NOVEL_ID) OWN ON NL.NOVEL_ID = OWN.NOVEL_ID
+        ORDER BY TOTAL_SALES
+        LIMIT #{size}
+        OFFSET 0
     </select>
 
     <insert id="saveNovel" parameterType="Novel" useGeneratedKeys="true" keyProperty="novelId">
@@ -83,7 +100,7 @@
     UPDATE NOVEL SET
                 TITLE = #{title}
               , GENRE = #{genre}
-              , AUTHOER = #{author}
+              , AUTHOR = #{author}
               , DESCRIPTION = #{description}
               , PUBLICATION_STATUS = #{publicationStatus}
               , PUBLICATION_DATE = #{publicationDate}

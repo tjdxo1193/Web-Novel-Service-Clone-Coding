@@ -7,12 +7,12 @@
     SELECT USER_ID, EMAIL, PASSWORD, USER_NAME, BIRTHDAY, CREATED_AT FROM USER WHERE USER_ID = #{userId}
   </select>
 
-  <insert id="saveUser" parameterType="USER" useGeneratedKeys="true" keyProperty="userId">
+  <insert id="saveUser" parameterType="User" useGeneratedKeys="true" keyProperty="userId">
     INSERT INTO USER (EMAIL, PASSWORD, USER_NAME, BIRTHDAY, CREATED_AT)
     VALUES (#{email},#{password},#{userName},#{birthday},#{createdAt})
   </insert>
 
-  <update id="updateUser" parameterType="USER">
+  <update id="updateUser" parameterType="User">
     UPDATE USER
     SET USER_NAME = #{userName}
       , EMAIL     = #{email}

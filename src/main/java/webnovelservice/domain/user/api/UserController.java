@@ -9,7 +9,7 @@ import webnovelservice.domain.user.application.UserWriteService;
 import webnovelservice.domain.user.dto.RegisterUserCommand;
 import webnovelservice.domain.user.dto.ResponseUserDto;
 
-@Tag(name = "유저정보")
+@Tag(name = "유저 API")
 @RequestMapping("/users")
 @RestController
 @RequiredArgsConstructor

@@ -1,7 +1,5 @@
 package webnovelservice.domain.novel.dto;
 
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.databind.annotation.JsonNaming;
 import lombok.Getter;
 import org.springframework.format.annotation.DateTimeFormat;
 import webnovelservice.domain.novel.enums.PublicationStatus;

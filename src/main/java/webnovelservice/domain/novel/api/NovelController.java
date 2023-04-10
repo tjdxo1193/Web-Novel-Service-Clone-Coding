@@ -1,6 +1,7 @@
 package webnovelservice.domain.novel.api;
 
 import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -13,7 +14,7 @@ import webnovelservice.domain.novel.dto.ResponseNovelDto;
 import webnovelservice.global.common.model.CommonResponse;
 
 import java.util.List;
-
+@Tag(name = "소설 API")
 @RestController
 @RequestMapping("novel")
 @RequiredArgsConstructor
@@ -23,7 +24,7 @@ public class NovelController {
 
     // 소설 1차 등록 , 작가의 이름을 정규화 vs 비정규화 ?
     @Operation(summary = "소설 커버 등록")
-    @PostMapping("/register")
+    @PostMapping("/")
     public ResponseEntity<ResponseNovelDto> register(@RequestBody RegisterNovelCommand command) {
         var novel = novelWriteService.create(command);
         return ResponseEntity.ok(novelReadService.toDto(novel));
@@ -36,7 +37,7 @@ public class NovelController {
     }
 
     @Operation(summary = "소설 커버 수정")
-    @PutMapping("/{novelId}/update")
+    @PutMapping("/{novelId}")
     public ResponseEntity<ResponseNovelDto> update(
             @PathVariable Long novelId,
             @RequestBody NovelDto novelDto
@@ -62,7 +63,7 @@ public class NovelController {
     }
 
     // 이달의 화제작 조회
-    @Operation(summary = "이달의 화제작 목록 조회 - TOP-20")
+    @Operation(summary = "이달의 화제작 목록 조회 - TOP 20")
     @GetMapping("/this-month-novel")
     public ResponseEntity<List<ResponseNovelDto>> getThisMonthNovels(@RequestBody NovelRequest params) {
         return ResponseEntity.ok(novelReadService.getThisMonthNovels(params));
@@ -70,7 +71,7 @@ public class NovelController {
 
 
     // 베스트 셀러 소설 -
-    @Operation(summary = "베스트 셀러 목록 조회 - TOP-20")
+    @Operation(summary = "베스트 셀러 목록 조회 - TOP 20")
     @GetMapping("/best-seller-novel")
     public ResponseEntity<List<ResponseNovelDto>> getBestSellerNovels(@RequestBody NovelRequest params) {
         return ResponseEntity.ok(novelReadService.getBestSellerNovels(params));
