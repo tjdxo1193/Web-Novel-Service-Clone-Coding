@@ -49,13 +49,13 @@
             , NL.PUBLICATION_DATE
             , NL.PUBLICATION_STATUS
             , NL.CREATED_AT
-            , VS.TOTAL_VIEW_COUNT
+            , VS.TOTAL_VIEWS
         FROM NOVEL NL
         LEFT JOIN (
-            SELECT SUM(VIEW_COUNT) AS TOTAL_VIEW_COUNT, NOVEL_ID
+            SELECT SUM(VIEWS) AS TOTAL_VIEWS, NOVEL_ID
             FROM VIEWS
             GROUP BY NOVEL_ID) VS ON NL.NOVEL_ID = VS.NOVEL_ID
-        ORDER BY TOTAL_VIEW_COUNT
+        ORDER BY TOTAL_VIEWS
         LIMIT #{size}
         OFFSET 0
    </select>
@@ -78,6 +78,72 @@
             GROUP BY NOVEL_ID) OWN ON NL.NOVEL_ID = OWN.NOVEL_ID
         ORDER BY TOTAL_SALES
         LIMIT #{size}
+        OFFSET 0
+    </select>
+
+    <select id="findByBestDailyView" parameterType="NovelRequest" resultType="Novel">
+        SELECT
+            NL.NOVEL_ID
+             , NL.TITLE
+             , NL.GENRE
+             , NL.AUTHOR
+             , NL.DESCRIPTION
+             , NL.PUBLICATION_DATE
+             , NL.PUBLICATION_STATUS
+             , NL.CREATED_AT
+             , VS.TOTAL_VIEWS
+        FROM NOVEL NL
+                 LEFT JOIN (
+            SELECT SUM(VIEWS) AS TOTAL_VIEWS, NOVEL_ID
+            FROM VIEWS
+            WHERE VIEW_DATE BETWEEN DATE_ADD(NOW(), interval -1 DAY) AND NOW()
+            GROUP BY NOVEL_ID) VS ON NL.NOVEL_ID = VS.NOVEL_ID
+        ORDER BY TOTAL_VIEWS
+            LIMIT #{size}
+        OFFSET 0
+    </select>
+
+    <select id="findByBestDailyPaid" parameterType="NovelRequest" resultType="Novel">
+        SELECT
+            NL.NOVEL_ID
+             , NL.TITLE
+             , NL.GENRE
+             , NL.AUTHOR
+             , NL.DESCRIPTION
+             , NL.PUBLICATION_DATE
+             , NL.PUBLICATION_STATUS
+             , NL.CREATED_AT
+             , OWN.TOTAL_SALES
+        FROM NOVEL NL
+                 LEFT JOIN (
+            SELECT COUNT(ONL.OWNED_IDX) AS TOTAL_SALES, ONL.NOVEL_ID
+            FROM OWNED_NOVEL ONL
+            LEFT JOIN NOVEL_PRICE NP ON NP.NOVEL_ID = ONL.NOVEL_ID AND NP.EPISODE_IDX = ONL.EPISODE_IDX
+            WHERE OWNED_DATE BETWEEN DATE_ADD(NOW(), interval -1 DAY) AND NOW()
+            GROUP BY NOVEL_ID) OWN ON NL.NOVEL_ID = OWN.NOVEL_ID
+        ORDER BY TOTAL_SALES
+            LIMIT #{size}
+        OFFSET 0
+    </select>
+
+    <select id="findByBestDailyFree" parameterType="NovelRequest" resultType="Novel">
+        SELECT
+            NL.NOVEL_ID
+             , NL.TITLE
+             , NL.GENRE
+             , NL.AUTHOR
+             , NL.DESCRIPTION
+             , NL.PUBLICATION_DATE
+             , NL.PUBLICATION_STATUS
+             , NL.CREATED_AT
+             , OWN.TOTAL_SALES
+        FROM NOVEL NL
+                 LEFT JOIN (
+            SELECT COUNT(OWNED_IDX) AS TOTAL_SALES, NOVEL_ID
+            FROM OWNED_NOVEL
+            GROUP BY NOVEL_ID) OWN ON NL.NOVEL_ID = OWN.NOVEL_ID
+        ORDER BY TOTAL_SALES
+            LIMIT #{size}
         OFFSET 0
     </select>
 

@@ -57,4 +57,28 @@ public class NovelReadService {
                 .map(this::toDto)
                 .toList();
     }
+
+    public List<ResponseNovelDto> getBestDailyFreeNovels(NovelRequest params) {
+        var novels = novelDao.findByBestDailyFree(params);
+
+        return novels.stream()
+                .map(this::toDto)
+                .toList();
+    }
+
+    public List<ResponseNovelDto> getBestDailyPaidNovels(NovelRequest params) {
+        var novels = novelDao.findByBestDailyPaid(params);
+
+        return novels.stream()
+                .map(this::toDto)
+                .toList();
+    }
+
+    public List<ResponseNovelDto> getBestDailyViewNovels(NovelRequest params) {
+        var novels = novelDao.findByBestDailyView(params);
+
+        return novels.stream()
+                .map(this::toDto)
+                .toList();
+    }
 }

@@ -78,4 +78,25 @@ public class NovelController {
     public ResponseEntity<List<ResponseNovelDto>> getBestSellerNovels(@RequestBody NovelRequest params) {
         return ResponseEntity.ok(novelReadService.getBestSellerNovels(params));
     }
+
+    // 일일 조회 베스트 소설 -
+    @Operation(summary = "일일 조회 베스트 - TOP 20")
+    @GetMapping("/best-daily-view")
+    public ResponseEntity<List<ResponseNovelDto>> getBestDailyViewNovels(@RequestBody NovelRequest params) {
+        return ResponseEntity.ok(novelReadService.getBestDailyViewNovels(params));
+    }
+
+    // 일일 유료 베스트 소설 -
+    @Operation(summary = "일일 유료 베스트 - TOP 20")
+    @GetMapping("/best-daily-paid")
+    public ResponseEntity<List<ResponseNovelDto>> getBestDailyPaidNovels(@RequestBody NovelRequest params) {
+        return ResponseEntity.ok(novelReadService.getBestDailyPaidNovels(params));
+    }
+
+    // 일일 무료 베스트 소설 -
+    @Operation(summary = "일일 무료 베스트 - TOP 20")
+    @GetMapping("/best-daily-free")
+    public ResponseEntity<List<ResponseNovelDto>> getBestDailyFreeNovels(@RequestBody NovelRequest params) {
+        return ResponseEntity.ok(novelReadService.getBestDailyFreeNovels(params));
+    }
 }
