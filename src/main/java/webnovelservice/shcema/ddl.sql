@@ -102,14 +102,6 @@ CREATE TABLE EPISODE_INFO (
                               EPISODE_IMAGE BLOB NULL COMMENT '에피소드별 대표 이미지'
 );
 
-CREATE TABLE NOVEL_PAGE (
-                            PAGE_IDX	BIGINT	NOT NULL COMMENT '페이지 인덱스',
-                            EPISODE_IDX	BIGINT	NOT NULL COMMENT '에피소드 인덱스',
-                            NOVEL_ID	BIGINT	NOT NULL COMMENT '소설 아이디',
-                            PAGE_NUM INTEGER	NOT NULL COMMENT '페이지 번호',
-                            CONTEXT	VARCHAR(2000)	NULL
-);
-
 CREATE TABLE BOOK_MARK (
                            NOVEL_ID	BIGINT	NOT NULL COMMENT '소설 아이디',
                            USER_ID	BIGINT	NOT NULL	COMMENT '유저 아이디',
@@ -144,12 +136,6 @@ ALTER TABLE NOVEL_INFO ADD CONSTRAINT PK_NOVEL_INFO PRIMARY KEY (
 ALTER TABLE EPISODE_INFO ADD CONSTRAINT PK_EPISODE_INFO PRIMARY KEY (
                                                                      EPISODE_IDX,
                                                                      NOVEL_ID
-    );
-
-ALTER TABLE NOVEL_PAGE ADD CONSTRAINT PK_NOVEL_PAGE PRIMARY KEY (
-                                                                 PAGE_IDX,
-                                                                 EPISODE_IDX,
-                                                                 NOVEL_ID
     );
 
 ALTER TABLE BOOK_MARK ADD CONSTRAINT PK_BOOK_MARK PRIMARY KEY (
@@ -197,13 +183,6 @@ ALTER TABLE EPISODE_INFO ADD CONSTRAINT FK_NOVEL_EPISODE_TO_EPISODE_INFO_2 FOREI
     )
     REFERENCES NOVEL_EPISODE (
                               NOVEL_ID
-        );
-
-ALTER TABLE NOVEL_PAGE ADD CONSTRAINT FK_NOVEL_TO_NOVEL_PAGE_1 FOREIGN KEY (
-                                                                            NOVEL_ID
-    )
-    REFERENCES NOVEL (
-                      NOVEL_ID
         );
 
 ALTER TABLE BOOK_MARK ADD CONSTRAINT FK_NOVEL_TO_BOOK_MARK_1 FOREIGN KEY (
