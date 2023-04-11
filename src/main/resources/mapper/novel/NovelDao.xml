@@ -1,0 +1,184 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="webnovelservice.domain.novel.dao.NovelDao">
+  <select id="findByNovelId" resultType="Novel" parameterType="Long">
+    SELECT NOVEL_ID
+         , TITLE
+         , GENRE
+         , AUTHOR
+         , DESCRIPTION
+         , PUBLICATION_DATE
+         , PUBLICATION_STATUS
+         , CREATED_AT
+    FROM NOVEL WHERE NOVEL_ID = #{novelId}
+  </select>
+
+  <!-- 페이징 적용 -->
+  <select id="findByAuthorAndTitle" resultType="Novel" parameterType="map">
+    SELECT NOVEL_ID
+         , TITLE
+         , GENRE
+         , AUTHOR
+         , DESCRIPTION
+         , PUBLICATION_DATE
+         , PUBLICATION_STATUS
+         , CREATED_AT
+    FROM NOVEL
+    WHERE 1 = 1
+        <if test="key != null">
+          AND NOVEL_ID <![CDATA[<]]> #{key}
+        </if>
+        <if test="novelRequest.title != null and novelRequest.title != ''">
+            AND TITLE LIKE ('%'+#{novelRequest.title}+'%')
+        </if>
+        <if test="novelRequest.author != null and novelRequest.author != ''">
+            AND AUTHOR LIKE ('%'+#{novelRequest.author}+'%')
+        </if>
+    ORDER BY NOVEL_ID DESC
+    LIMIT #{size}
+  </select>
+
+    <select id="findByMostViews" resultType="Novel" parameterType="NovelRequest">
+        SELECT
+            NL.NOVEL_ID
+            , NL.TITLE
+            , NL.GENRE
+            , NL.AUTHOR
+            , NL.DESCRIPTION
+            , NL.PUBLICATION_DATE
+            , NL.PUBLICATION_STATUS
+            , NL.CREATED_AT
+            , VS.TOTAL_VIEWS
+        FROM NOVEL NL
+        LEFT JOIN (
+            SELECT SUM(VIEWS) AS TOTAL_VIEWS, NOVEL_ID
+            FROM VIEWS
+            GROUP BY NOVEL_ID) VS ON NL.NOVEL_ID = VS.NOVEL_ID
+        ORDER BY TOTAL_VIEWS
+        LIMIT #{size}
+        OFFSET 0
+   </select>
+
+    <select id="findByMostSales" resultType="Novel" parameterType="NovelRequest">
+        SELECT
+            NL.NOVEL_ID
+             , NL.TITLE
+             , NL.GENRE
+             , NL.AUTHOR
+             , NL.DESCRIPTION
+             , NL.PUBLICATION_DATE
+             , NL.PUBLICATION_STATUS
+             , NL.CREATED_AT
+             , OWN.TOTAL_SALES
+        FROM NOVEL NL
+        LEFT JOIN (
+            SELECT COUNT(OWNED_IDX) AS TOTAL_SALES, NOVEL_ID
+            FROM OWNED_NOVEL
+            GROUP BY NOVEL_ID) OWN ON NL.NOVEL_ID = OWN.NOVEL_ID
+        ORDER BY TOTAL_SALES
+        LIMIT #{size}
+        OFFSET 0
+    </select>
+
+    <select id="findByBestDailyView" parameterType="NovelRequest" resultType="Novel">
+        SELECT
+            NL.NOVEL_ID
+             , NL.TITLE
+             , NL.GENRE
+             , NL.AUTHOR
+             , NL.DESCRIPTION
+             , NL.PUBLICATION_DATE
+             , NL.PUBLICATION_STATUS
+             , NL.CREATED_AT
+             , VS.TOTAL_VIEWS
+        FROM NOVEL NL
+                 LEFT JOIN (
+            SELECT SUM(VIEWS) AS TOTAL_VIEWS, NOVEL_ID
+            FROM VIEWS
+            WHERE VIEW_DATE BETWEEN DATE_ADD(NOW(), interval -1 DAY) AND NOW()
+            GROUP BY NOVEL_ID) VS ON NL.NOVEL_ID = VS.NOVEL_ID
+        ORDER BY TOTAL_VIEWS
+            LIMIT #{size}
+        OFFSET 0
+    </select>
+
+    <select id="findByBestDailyPaid" parameterType="NovelRequest" resultType="Novel">
+        SELECT
+            NL.NOVEL_ID
+             , NL.TITLE
+             , NL.GENRE
+             , NL.AUTHOR
+             , NL.DESCRIPTION
+             , NL.PUBLICATION_DATE
+             , NL.PUBLICATION_STATUS
+             , NL.CREATED_AT
+             , OWN.TOTAL_SALES
+        FROM NOVEL NL
+                 LEFT JOIN (
+            SELECT COUNT(ONL.OWNED_IDX) AS TOTAL_SALES, ONL.NOVEL_ID
+            FROM OWNED_NOVEL ONL
+            LEFT JOIN NOVEL_PRICE NP ON NP.NOVEL_ID = ONL.NOVEL_ID AND NP.EPISODE_IDX = ONL.EPISODE_IDX
+            WHERE OWNED_DATE BETWEEN DATE_ADD(NOW(), interval -1 DAY) AND NOW()
+            GROUP BY NOVEL_ID) OWN ON NL.NOVEL_ID = OWN.NOVEL_ID
+        ORDER BY TOTAL_SALES
+            LIMIT #{size}
+        OFFSET 0
+    </select>
+
+    <select id="findByBestDailyFree" parameterType="NovelRequest" resultType="Novel">
+        SELECT
+            NL.NOVEL_ID
+             , NL.TITLE
+             , NL.GENRE
+             , NL.AUTHOR
+             , NL.DESCRIPTION
+             , NL.PUBLICATION_DATE
+             , NL.PUBLICATION_STATUS
+             , NL.CREATED_AT
+             , OWN.TOTAL_SALES
+        FROM NOVEL NL
+                 LEFT JOIN (
+            SELECT COUNT(OWNED_IDX) AS TOTAL_SALES, NOVEL_ID
+            FROM OWNED_NOVEL
+            GROUP BY NOVEL_ID) OWN ON NL.NOVEL_ID = OWN.NOVEL_ID
+        ORDER BY TOTAL_SALES
+            LIMIT #{size}
+        OFFSET 0
+    </select>
+
+    <insert id="saveNovel" parameterType="Novel" useGeneratedKeys="true" keyProperty="novelId">
+    INSERT INTO NOVEL
+    (
+    TITLE
+    , GENRE
+    , AUTHOR
+    , DESCRIPTION
+    , PUBLICATION_DATE
+    , PUBLICATION_STATUS
+    , CREATED_AT
+    ) VALUES
+          ( #{title}
+          , #{genre}
+          , #{author}
+          , #{description}
+          , #{publicationDate}
+          , #{publicationStatus}
+          , #{createdAt} )
+  </insert>
+
+  <update id="updateNovel" parameterType="Novel">
+    UPDATE NOVEL SET
+                TITLE = #{title}
+              , GENRE = #{genre}
+              , AUTHOR = #{author}
+              , DESCRIPTION = #{description}
+              , PUBLICATION_STATUS = #{publicationStatus}
+              , PUBLICATION_DATE = #{publicationDate}
+    WHERE NOVEL_ID = #{novelId}
+  </update>
+
+  <delete id="deleteNovel" parameterType="Long">
+    DELETE FROM NOVEL WHERE NOVEL_ID = #{novelId}
+  </delete>
+</mapper>

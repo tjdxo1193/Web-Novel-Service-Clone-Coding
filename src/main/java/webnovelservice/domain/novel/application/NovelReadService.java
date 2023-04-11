@@ -1,0 +1,84 @@
+package webnovelservice.domain.novel.application;
+
+import lombok.RequiredArgsConstructor;
+import org.springframework.stereotype.Service;
+import webnovelservice.domain.novel.dao.NovelDao;
+import webnovelservice.domain.novel.dto.NovelRequest;
+import webnovelservice.domain.novel.dto.ResponseNovelDto;
+import webnovelservice.domain.novel.entity.Novel;
+import webnovelservice.global.util.CursorRequest;
+import webnovelservice.global.util.PageCursor;
+import java.util.List;
+
+@Service
+@RequiredArgsConstructor
+public class NovelReadService {
+
+    final private NovelDao novelDao;
+
+    public ResponseNovelDto getNovel(Long novelId) {
+        var novel = novelDao.findByNovelId(novelId);
+        return toDto(novel);
+    }
+
+    public PageCursor<ResponseNovelDto> getNovels(CursorRequest<NovelRequest> cursorRequest) {
+        var novels = novelDao.findByAuthorAndTitle(cursorRequest.r(), cursorRequest.key(), cursorRequest.size());
+        var nextKey = novels.stream().mapToLong(Novel::getNovelId).min().orElse(CursorRequest.NONE_KEY);
+        return new PageCursor<>(cursorRequest.next(nextKey),
+                novels.stream()
+                .map(this::toDto)
+                .toList());
+    }
+
+    public ResponseNovelDto toDto(Novel novel) {
+        return new ResponseNovelDto(
+                novel.getNovelId(),
+                novel.getTitle(),
+                novel.getAuthor(),
+                novel.getGenre(),
+                novel.getDescription(),
+                novel.getPublicationDate(),
+                novel.getPublicationStatus(),
+                novel.getCreatedAt());
+    }
+
+    public List<ResponseNovelDto> getThisMonthNovels(NovelRequest params) {
+        var novels = novelDao.findByMostViews(params);
+
+        return novels.stream()
+                .map(this::toDto)
+                .toList();
+    }
+
+    public List<ResponseNovelDto> getBestSellerNovels(NovelRequest params) {
+        var novels = novelDao.findByMostSales(params);
+
+        return novels.stream()
+                .map(this::toDto)
+                .toList();
+    }
+
+    public List<ResponseNovelDto> getBestDailyFreeNovels(NovelRequest params) {
+        var novels = novelDao.findByBestDailyFree(params);
+
+        return novels.stream()
+                .map(this::toDto)
+                .toList();
+    }
+
+    public List<ResponseNovelDto> getBestDailyPaidNovels(NovelRequest params) {
+        var novels = novelDao.findByBestDailyPaid(params);
+
+        return novels.stream()
+                .map(this::toDto)
+                .toList();
+    }
+
+    public List<ResponseNovelDto> getBestDailyViewNovels(NovelRequest params) {
+        var novels = novelDao.findByBestDailyView(params);
+
+        return novels.stream()
+                .map(this::toDto)
+                .toList();
+    }
+}
