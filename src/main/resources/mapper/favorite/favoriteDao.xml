@@ -3,4 +3,10 @@
   "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="webnovelservice.domain.favorite.dao.FavoriteDao">
 
+    <insert id="addFavorite" parameterType="">
+
+    </insert>
+    <select id="findFavoritesByUserId" resultType="Favorite" parameterType="Long">
+        SELECT USER_ID, NOVEL_ID, THUMB_DATE, THUMB_YN FROM FAVORITE WHERE USER_ID = #{userId}
+    </select>
 </mapper>
