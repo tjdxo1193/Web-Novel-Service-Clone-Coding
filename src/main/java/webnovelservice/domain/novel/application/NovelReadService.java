@@ -3,6 +3,8 @@ package webnovelservice.domain.novel.application;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import webnovelservice.domain.novel.dao.NovelDao;
+import webnovelservice.domain.novel.dto.NovelDetailDto;
+import webnovelservice.domain.novel.dto.NovelHeader;
 import webnovelservice.domain.novel.dto.NovelRequest;
 import webnovelservice.domain.novel.dto.ResponseNovelDto;
 import webnovelservice.domain.novel.entity.Novel;
@@ -87,5 +89,10 @@ public class NovelReadService {
         return novels.stream()
                 .map(this::toDto)
                 .toList();
+    }
+
+    public NovelHeader findNovelDetailByNovelId(Long novelId, Long userId) {
+        var novelHeader = novelDao.findNovelDetailByNovelId(novelId, userId);
+        return novelHeader;
     }
 }

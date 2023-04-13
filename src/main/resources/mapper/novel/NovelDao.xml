@@ -146,8 +146,17 @@
             LIMIT #{size}
         OFFSET 0
     </select>
-    <select id="findByInNovelIds" resultType="webnovelservice.domain.novel.entity.Novel">
 
+    <select id="findByInNovelIds" resultType="Novel">
+        SELECT
+
+        FROM NOVEL
+        WHERE NOVEL_ID IN (#{novelIds})
+    </select>
+
+    <select id="findNovelDetailByNovelId" resultType="NovelHeader" parameterType="map">
+        SELECT
+        FROM NOVEL
     </select>
 
     <insert id="saveNovel" parameterType="Novel" useGeneratedKeys="true" keyProperty="novelId">

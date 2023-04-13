@@ -2,16 +2,19 @@ package webnovelservice.domain.novel.entity;
 
 import lombok.Builder;
 import lombok.Getter;
+import org.apache.commons.lang3.StringUtils;
 import webnovelservice.domain.novel.enums.GenreDiv;
 import webnovelservice.domain.novel.enums.PublicationStatus;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.util.List;
 import java.util.Objects;
 
 @Getter
 public class Novel {
     final private Long novelId;
+    private String novelIds;
     final private String title;
     final private String author;
     final private GenreDiv genre;
@@ -30,5 +33,15 @@ public class Novel {
         this.publicationDate = Objects.requireNonNull(publicationDate);
         this.publicationStatus = Objects.requireNonNullElse(publicationStatus, PublicationStatus.DEFAULT);
         this.createdAt = createdAt == null ? LocalDateTime.now() : createdAt;
+    }
+
+    public void toNovelIdsWithComma(List<Long> novelIds) {
+        var temp = StringUtils.EMPTY;
+        if (novelIds.size() != 0) {
+            // TODO IN 에 들어갈 형식으로 만들기
+            this.novelIds = novelIds.toString();
+        } else {
+            this.novelIds = StringUtils.EMPTY;
+        }
     }
 }
