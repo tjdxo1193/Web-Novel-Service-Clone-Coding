@@ -8,7 +8,6 @@ import org.springframework.web.bind.annotation.*;
 import webnovelservice.domain.favorite.application.FavoriteReadService;
 import webnovelservice.domain.favorite.application.FavoriteWriteService;
 import webnovelservice.domain.favorite.usecase.GetNovelFavoriteUsecase;
-import webnovelservice.domain.novel.dto.NovelDto;
 import webnovelservice.domain.novel.dto.ResponseNovelDto;
 
 import java.util.List;
@@ -43,5 +42,4 @@ public class FavoriteController {
     public ResponseEntity<List<ResponseNovelDto>> getFavoriteNovels(@PathVariable Long userId) {
         return ResponseEntity.ok(getNovelFavoriteUsecase.execute(userId));
     }
-
 }

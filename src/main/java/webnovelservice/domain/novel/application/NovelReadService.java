@@ -3,7 +3,6 @@ package webnovelservice.domain.novel.application;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import webnovelservice.domain.novel.dao.NovelDao;
-import webnovelservice.domain.novel.dto.NovelDto;
 import webnovelservice.domain.novel.dto.NovelRequest;
 import webnovelservice.domain.novel.dto.ResponseNovelDto;
 import webnovelservice.domain.novel.entity.Novel;
