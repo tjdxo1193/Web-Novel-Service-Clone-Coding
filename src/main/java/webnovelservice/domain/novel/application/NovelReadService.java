@@ -16,12 +16,12 @@ public class NovelReadService {
 
     final private NovelDao novelDao;
 
-    public ResponseNovelDto getNovel(Long novelId) {
+    public ResponseNovelDto findByNovelId(Long novelId) {
         var novel = novelDao.findByNovelId(novelId);
         return toDto(novel);
     }
 
-    public PageCursor<ResponseNovelDto> getNovels(CursorRequest<NovelRequest> cursorRequest) {
+    public PageCursor<ResponseNovelDto> findByAuthorAndTitle(CursorRequest<NovelRequest> cursorRequest) {
         var novels = novelDao.findByAuthorAndTitle(cursorRequest.r(), cursorRequest.key(), cursorRequest.size());
         var nextKey = novels.stream().mapToLong(Novel::getNovelId).min().orElse(CursorRequest.NONE_KEY);
         return new PageCursor<>(cursorRequest.next(nextKey),
@@ -42,7 +42,7 @@ public class NovelReadService {
                 novel.getCreatedAt());
     }
 
-    public List<ResponseNovelDto> getThisMonthNovels(NovelRequest params) {
+    public List<ResponseNovelDto> findByMostViews(NovelRequest params) {
         var novels = novelDao.findByMostViews(params);
 
         return novels.stream()
@@ -50,15 +50,7 @@ public class NovelReadService {
                 .toList();
     }
 
-    public List<ResponseNovelDto> getBestSellerNovels(NovelRequest params) {
-        var novels = novelDao.findByMostSales(params);
-
-        return novels.stream()
-                .map(this::toDto)
-                .toList();
-    }
-
-    public List<ResponseNovelDto> getBestDailyFreeNovels(NovelRequest params) {
+    public List<ResponseNovelDto> findByBestDailyFree(NovelRequest params) {
         var novels = novelDao.findByBestDailyFree(params);
 
         return novels.stream()
@@ -66,7 +58,7 @@ public class NovelReadService {
                 .toList();
     }
 
-    public List<ResponseNovelDto> getBestDailyPaidNovels(NovelRequest params) {
+    public List<ResponseNovelDto> findByBestDailyPaid(NovelRequest params) {
         var novels = novelDao.findByBestDailyPaid(params);
 
         return novels.stream()
@@ -74,9 +66,24 @@ public class NovelReadService {
                 .toList();
     }
 
-    public List<ResponseNovelDto> getBestDailyViewNovels(NovelRequest params) {
+    public List<ResponseNovelDto> findByBestDailyView(NovelRequest params) {
         var novels = novelDao.findByBestDailyView(params);
 
+        return novels.stream()
+                .map(this::toDto)
+                .toList();
+    }
+
+    public List<ResponseNovelDto> findByMostSales(NovelRequest params) {
+        var novels = novelDao.findByMostSales(params);
+
+        return novels.stream()
+                .map(this::toDto)
+                .toList();
+    }
+
+    public List<ResponseNovelDto> findByInNovelIds(List<Long> novelIds) {
+        var novels = novelDao.findByInNovelIds(novelIds);
         return novels.stream()
                 .map(this::toDto)
                 .toList();

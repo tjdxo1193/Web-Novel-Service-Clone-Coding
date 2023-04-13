@@ -20,7 +20,7 @@ public class NovelWriteService {
     final private NovelDao novelDao;
 
 
-    public Novel create(RegisterNovelCommand command) {
+    public Novel createNovel(RegisterNovelCommand command) {
         var novel = Novel.builder()
                 .title(command.title())
                 .genre(command.genre())
@@ -33,7 +33,7 @@ public class NovelWriteService {
         return novel;
     }
 
-    public Novel update(Long novelId, NovelDto novelDto) {
+    public Novel updateNovel(Long novelId, NovelDto novelDto) {
         var novel = Novel.builder()
                 .novelId(novelId)
                 .title(novelDto.title())
@@ -48,7 +48,7 @@ public class NovelWriteService {
         return novel;
     }
 
-    public void delete(Long novelId) {
+    public void deleteNovel(Long novelId) {
         novelDao.deleteNovel(novelId);
     }
 }

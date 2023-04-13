@@ -146,6 +146,9 @@
             LIMIT #{size}
         OFFSET 0
     </select>
+    <select id="findByInNovelIds" resultType="webnovelservice.domain.novel.entity.Novel">
+
+    </select>
 
     <insert id="saveNovel" parameterType="Novel" useGeneratedKeys="true" keyProperty="novelId">
     INSERT INTO NOVEL

@@ -21,4 +21,5 @@ public interface NovelDao {
     void updateNovel(Novel novel);
     void deleteNovel(Long novelId);
     Long saveNovel(Novel novel);
+    List<Novel> findByInNovelIds(List<Long> novelIds);
 }
