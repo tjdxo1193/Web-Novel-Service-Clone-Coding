@@ -11,7 +11,7 @@ public class FavoriteWriteService {
     final private FavoriteDao favoriteDao;
 
     public int addFavorite(Long userId, Long novelId) {
-        return favoriteDao.addFavorite(userId, novelId);
+        return favoriteDao.createFavorite(userId, novelId);
     }
 
     public int deleteFavorite(Long userId, Long novelId) {

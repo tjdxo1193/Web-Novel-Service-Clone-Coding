@@ -2,14 +2,20 @@ package webnovelservice.domain.episode.dao;
 
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
-import webnovelservice.domain.episode.entity.Episode;
+import webnovelservice.domain.episode.entity.EpisodeInfo;
+import webnovelservice.domain.episode.entity.NovelEpisode;
 
 @Mapper
 public interface EpisodeDao {
 
-    Long createEpisode(@Param("novelId") Long novelId,@Param("userId") Long userId);
+    Long createEpisode(NovelEpisode episode);
 
-    int updateEpisode(@Param("novelId") Long novelId,@Param("episodeIdx") Long episodeIdx);
+    NovelEpisode findEpisodeByNovelIdAndepisodeId(@Param("episodeId") Long episodeId);
 
-    Episode findEpisodeByNovelIdAndEpisodeIdx(@Param("novelId")Long novelId, @Param("episodeIdx") Long episodeIdx);
+    Integer createEpisodeInfo(EpisodeInfo episodeInfo);
+
+    int updateEpisodeImage(EpisodeInfo episodeInfo);
+
+    int updateEpisode(NovelEpisode episode);
+
 }

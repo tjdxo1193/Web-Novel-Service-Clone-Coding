@@ -28,7 +28,8 @@ public class FavoriteController {
     public ResponseEntity<Integer> favorite(@PathVariable Long userId, @PathVariable Long novelId) {
         return ResponseEntity.ok(favoriteWriteService.addFavorite(userId, novelId));
     }
-
+    // TODO SoftDelete Vs HardDelete 오라클은 delete 쿼리를 날릴시에 로깅 테이블에 백업 row를 저장해준다.
+    //  그러면서 delete 하는데 걸리는 시간이 느릴 텐데 softDelete가 맞는지 모르겠다..
     // 내 선호작 삭제 -> 취소 다시 누름
     @Operation(summary = "내 선호작 삭제(취소)")
     @DeleteMapping("/{userId}/{novelId}")

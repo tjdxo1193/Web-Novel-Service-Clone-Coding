@@ -4,7 +4,7 @@ import java.io.File;
 
 public record EpisodeDetail(
         Long novelId,
-        Long episodeIdx,
+        Long episodeId,
         String title,
         Integer episodeNum,
         Integer pageCount,

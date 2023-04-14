@@ -4,18 +4,15 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import webnovelservice.domain.episode.dao.EpisodeDao;
 import webnovelservice.domain.episode.dto.EpisodeDto;
-import webnovelservice.domain.episode.entity.Episode;
-
-import java.io.File;
 
 @Service
 @RequiredArgsConstructor
 public class EpisodeReadService {
-
+//TODO TEXT 타입 content를 페이징처리하여 (커서기반)
     final private EpisodeDao episodeDao;
-    public EpisodeDto toDto(Episode episode) {
+    public EpisodeDto toDto(NovelEpisode episode) {
         return new EpisodeDto(
-                episode.getEpisodeIdx(),
+                episode.getepisodeId(),
                 episode.getNovelId(),
                 episode.getEpisodeImage(),
                 episode.getTitle(),
@@ -26,8 +23,8 @@ public class EpisodeReadService {
         );
     }
 
-    public EpisodeDto findEpisodeByNovelIdAndEpisodeIdx(Long novelId, Long episodeIdx) {
-        var epiosde = episodeDao.findEpisodeByNovelIdAndEpisodeIdx(novelId, episodeIdx);
+    public EpisodeDto findEpisodeByNovelIdAndepisodeId(Long novelId, Long episodeId) {
+        var epiosde = episodeDao.findEpisodeByNovelIdAndepisodeId(novelId, episodeId);
         return toDto(epiosde);
     }
 }
