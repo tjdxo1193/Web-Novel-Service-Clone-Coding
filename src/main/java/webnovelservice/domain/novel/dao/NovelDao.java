@@ -2,6 +2,7 @@ package webnovelservice.domain.novel.dao;
 
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
+import webnovelservice.domain.novel.dto.NovelHeader;
 import webnovelservice.domain.novel.dto.NovelRequest;
 import webnovelservice.domain.novel.dto.ResponseNovelDto;
 import webnovelservice.domain.novel.entity.Novel;
@@ -22,4 +23,6 @@ public interface NovelDao {
     void deleteNovel(Long novelId);
     Long saveNovel(Novel novel);
     List<Novel> findByInNovelIds(List<Long> novelIds);
+
+    NovelHeader findNovelDetailByNovelId(@Param("novelId")Long novelId, @Param("userId")Long userId);
 }

@@ -3,10 +3,20 @@
   "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="webnovelservice.domain.favorite.dao.FavoriteDao">
 
-    <insert id="addFavorite" parameterType="">
-
+    <insert id="createFavorite" parameterType="map">
+        INSERT INTO FAVORITE (NOVEL_ID, USER_ID, THUMB_YN, THUMB_DATE)
+        VALUES ( #{novelId}
+               , #{userId}
+               , #{thumbYn}
+               , #{thumbDate})
     </insert>
+
+    <delete id="deleteFavorite" parameterType="map">
+        DELETE FROM FAVORITE WHERE NOVEL_ID = #{novelId} AND USER_ID = #{userId}
+    </delete>
+
     <select id="findFavoritesByUserId" resultType="Favorite" parameterType="Long">
         SELECT USER_ID, NOVEL_ID, THUMB_DATE, THUMB_YN FROM FAVORITE WHERE USER_ID = #{userId}
     </select>
+
 </mapper>

@@ -8,6 +8,7 @@ import org.springframework.web.bind.annotation.*;
 import webnovelservice.domain.novel.application.NovelReadService;
 import webnovelservice.domain.novel.application.NovelWriteService;
 import webnovelservice.domain.novel.dto.*;
+import webnovelservice.domain.novel.usecase.MakeNovelInfoUsecase;
 import webnovelservice.global.common.model.CommonResponse;
 import webnovelservice.global.util.CursorRequest;
 import webnovelservice.global.util.PageCursor;
@@ -21,6 +22,7 @@ public class NovelController {
     final private NovelReadService novelReadService;
     final private NovelWriteService novelWriteService;
 
+    final private MakeNovelInfoUsecase makeNovelInfoUsecase;
     // 소설 1차 등록 , 작가의 이름을 정규화 vs 비정규화 ?
     @Operation(summary = "소설 커버 등록")
     @PostMapping("/")
@@ -95,5 +97,11 @@ public class NovelController {
     @GetMapping("/best-daily-free")
     public ResponseEntity<List<ResponseNovelDto>> getBestDailyFreeNovels(@RequestBody NovelRequest params) {
         return ResponseEntity.ok(novelReadService.findByBestDailyFree(params));
+    }
+
+    @Operation(summary = "소설 상세 정보")
+    @GetMapping("/list/{novelId}/{userId}")
+    public ResponseEntity<NovelDetailDto> getNovelAndEpisodeDetail(@PathVariable Long novelId, @PathVariable Long userId){
+        return ResponseEntity.ok(makeNovelInfoUsecase.fetchNovelDetail(novelId, userId));
     }
 }

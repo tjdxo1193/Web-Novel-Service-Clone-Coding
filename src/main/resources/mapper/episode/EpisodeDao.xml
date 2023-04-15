@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="webnovelservice.domain.episode.dao.EpisodeDao">
+<!--  에피소드는 앞으로 계속해서 여러개씩 생성될거고 그때마다 select 쿼리를 사용하는 것은 비효율적이라고
+  생각함, 그래서 auto_increment 로 pk값을 관리하도록함.
+  하지만, 에피소드가 복합키로 novel_id를 사용할지 말지는 고민..fk로 뺄지 -->
+    <insert id="createEpisode" parameterType="map" useGeneratedKeys="true" keyProperty="episodeId">
+        INSERT INTO NOVEL_EPISODE (
+              NOVEL_ID
+            , TITLE
+            , EPISODE_NUM
+            , CONTENT
+        )
+        VALUES
+        (
+            #{novelId}
+            , #{title}
+            , #{episodeNum}
+            , #{content}
+        )
+    </insert>
+
+    <insert id="createEpisodeInfo" parameterType="EpisodeInfo">
+        INSERT INTO EPISODE_INFO (EPISODE_ID, NOVEL_ID, EPISODE_IMAGE)
+        VALUES (#{episodeId}, #{novelId}, #{episodeImage})
+    </insert>
+
+    <update id="updateEpisode" parameterType="NovelEpisode">
+        UPDATE NOVEL_EPISODE
+        SET TITLE = #{title},
+            EPISODE_NUM = #{episodeNum},
+            CONTENT = #{content}
+    </update>
+
+    <update id="updateEpisodeImage" parameterType="EpisodeInfo">
+        UPDATE EPISODE_INFO SET
+            EPISODE_IMAGE = #{episodeImage}
+        WHERE EPISODE_ID = #{episodeId}
+    </update>
+
+    <select id="findEpisodeByNovelIdAndepisodeId" resultType="NovelEpisode" parameterType="map">
+        SELECT EPISODE_ID,
+               NOVEL_ID,
+               TITLE,
+               EPISODE_NUM,
+               CONTENT
+        FROM NOVEL_EPISODE
+        WHERE EPISODE_ID = #{episodeId}
+    </select>
+</mapper>

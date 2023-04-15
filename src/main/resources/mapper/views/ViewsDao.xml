@@ -3,4 +3,22 @@
   "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="webnovelservice.domain.views.dao.ViewsDao">
 
+    <insert id="createViews" parameterType="ViewsDto">
+        INSERT INTO VIEWS (USER_ID, NOVEL_ID, VIEW_COUNT, VIEW_DATE)
+        VALUES (#{userId}, #{novelId}, 1, #{viewDate})
+    </insert>
+
+    <select id="findOneById" resultType="map">
+        SELECT USER_ID, NOVEL_ID, VIEW_COUNT, VIEW_DATE
+        FROM VIEWS
+        WHERE USER_ID = #{userId}
+        AND NOVEL_ID = #{novelId}
+    </select>
+
+    <update id="plusViewsByOne" parameterType="ViewsDto">
+        UPDATE VIEWS
+        SET VIEW_DATE = #{viewDate}
+        WHERE USER_ID = #{userId}
+        AND NOVEL_ID = #{novelId} for
+    </update>
 </mapper>
