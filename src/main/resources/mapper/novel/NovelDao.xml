@@ -52,7 +52,7 @@
             , VS.TOTAL_VIEWS
         FROM NOVEL NL
         LEFT JOIN (
-            SELECT SUM(VIEWS) AS TOTAL_VIEWS, NOVEL_ID
+            SELECT SUM(VIEW_COUNT) AS TOTAL_VIEWS, NOVEL_ID
             FROM VIEWS
             GROUP BY NOVEL_ID) VS ON NL.NOVEL_ID = VS.NOVEL_ID
         ORDER BY TOTAL_VIEWS
@@ -94,7 +94,7 @@
              , VS.TOTAL_VIEWS
         FROM NOVEL NL
                  LEFT JOIN (
-            SELECT SUM(VIEWS) AS TOTAL_VIEWS, NOVEL_ID
+            SELECT SUM(VIEW_COUNT) AS TOTAL_VIEWS, NOVEL_ID
             FROM VIEWS
             WHERE VIEW_DATE BETWEEN DATE_ADD(NOW(), interval -1 DAY) AND NOW()
             GROUP BY NOVEL_ID) VS ON NL.NOVEL_ID = VS.NOVEL_ID
@@ -118,7 +118,7 @@
                  LEFT JOIN (
             SELECT COUNT(ONL.OWNED_IDX) AS TOTAL_SALES, ONL.NOVEL_ID
             FROM OWNED_NOVEL ONL
-            LEFT JOIN NOVEL_PRICE NP ON NP.NOVEL_ID = ONL.NOVEL_ID AND NP.EPISODE_IDX = ONL.EPISODE_IDX
+            LEFT JOIN NOVEL_PRICE NP ON NP.NOVEL_ID = ONL.NOVEL_ID AND NP.EPISODE_ID = ONL.EPISODE_ID
             WHERE OWNED_DATE BETWEEN DATE_ADD(NOW(), interval -1 DAY) AND NOW()
             GROUP BY NOVEL_ID) OWN ON NL.NOVEL_ID = OWN.NOVEL_ID
         ORDER BY TOTAL_SALES
@@ -149,13 +149,14 @@
 
     <select id="findByInNovelIds" resultType="Novel">
         SELECT
-
+            NOVEL_ID, TITLE, GENRE, AUTHOR, DESCRIPTION, PUBLICATION_DATE, PUBLICATION_STATUS, CREATED_AT
         FROM NOVEL
         WHERE NOVEL_ID IN (#{novelIds})
     </select>
 
     <select id="findNovelDetailByNovelId" resultType="NovelHeader" parameterType="map">
         SELECT
+            NOVEL_ID, TITLE, GENRE, AUTHOR, DESCRIPTION, PUBLICATION_DATE, PUBLICATION_STATUS, CREATED_AT
         FROM NOVEL
     </select>
 

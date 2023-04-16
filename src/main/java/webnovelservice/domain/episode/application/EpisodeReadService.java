@@ -4,6 +4,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import webnovelservice.domain.episode.dao.EpisodeDao;
 import webnovelservice.domain.episode.dto.EpisodeDto;
+import webnovelservice.domain.episode.entity.NovelEpisode;
 
 @Service
 @RequiredArgsConstructor
@@ -12,14 +13,12 @@ public class EpisodeReadService {
     final private EpisodeDao episodeDao;
     public EpisodeDto toDto(NovelEpisode episode) {
         return new EpisodeDto(
-                episode.getepisodeId(),
+                episode.getEpisodeId(),
                 episode.getNovelId(),
                 episode.getEpisodeImage(),
                 episode.getTitle(),
                 episode.getEpisodeNum(),
-                episode.getContent(),
-                episode.getPage(),
-                episode.getSize()
+                episode.getContent()
         );
     }
 

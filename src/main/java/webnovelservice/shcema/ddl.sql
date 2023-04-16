@@ -4,7 +4,7 @@ CREATE TABLE USER (
                       PASSWORD	varchar(100)	NOT NULL  COMMENT '비밀번호',
                       USER_NAME	varchar(40)	NULL  COMMENT '이름',
                       BIRTHDAY	DATE	NULL  COMMENT '생일',
-                      CREATE_AT	datetime default (now()) COMMENT '유저 생성일'
+                      CREATED_AT	datetime default (now()) COMMENT '유저 생성일'
 );
 
 CREATE TABLE LOGIN_HISTORY (
@@ -22,7 +22,7 @@ CREATE TABLE NOVEL (
                        DESCRIPTION	VARCHAR(500) NULL COMMENT '설명_줄거리',
                        PUBLICATION_DATE	DATE NULL COMMENT '연재일자',
                        PUBLICATION_STATUS VARCHAR(10) NULL COMMENT '연재 상태',
-                       CREATE_AT	datetime default (now()) COMMENT '소설 생성일'
+                       CREATED_AT	datetime default (now()) COMMENT '소설 생성일'
 );
 
 CREATE TABLE FAVORITE (
@@ -43,22 +43,22 @@ ALTER TABLE FAVORITE ADD CONSTRAINT FK_USER_TO_FAVORITE_1
 ALTER TABLE FAVORITE ADD CONSTRAINT PK_FAVORITE
     PRIMARY KEY (NOVEL_ID, USER_ID );
 
-CREATE TABLE VIEW_COUNT (
+CREATE TABLE VIEWS (
                             USER_ID		BIGINT	NOT NULL COMMENT '유저 아이디',
                             NOVEL_ID	BIGINT	NOT NULL COMMENT '소설 아이디',
-                            VIEWS	    BIGINT NULL DEFAULT 1  COMMENT '유저별 조회 수',
+                            VIEW_COUNT	    BIGINT NULL DEFAULT 1  COMMENT '유저별 조회 수',
                             VIEW_DATE	datetime default (now()) COMMENT '조회 일시'
 );
 
-ALTER TABLE VIEW_COUNT ADD CONSTRAINT FK_USER_TO_VIEW_COUNT_1
+ALTER TABLE VIEWS ADD CONSTRAINT FK_USER_TO_VIEWS_1
     FOREIGN KEY (USER_ID)
         REFERENCES USER (USER_ID);
 
-ALTER TABLE VIEW_COUNT ADD CONSTRAINT FK_NOVEL_TO_VIEW_COUNT_1
+ALTER TABLE VIEWS ADD CONSTRAINT FK_NOVEL_TO_VIEWS_1
     FOREIGN KEY (NOVEL_ID)
         REFERENCES NOVEL (NOVEL_ID);
 
-ALTER TABLE VIEW_COUNT ADD CONSTRAINT PK_VIEW_COUNT
+ALTER TABLE VIEWS ADD CONSTRAINT PK_VIEWS
     PRIMARY KEY (USER_ID,NOVEL_ID);
 
 CREATE TABLE THEME_KEYWORDS (
@@ -111,7 +111,7 @@ CREATE TABLE BOOK_MARK (
 
 ALTER TABLE THEME_KEYWORDS ADD CONSTRAINT PK_THEME_KEYWORDS PRIMARY KEY (
                                                                          KEYWORD_IDX
-);
+    );
 
 ALTER TABLE MAPPING_KEYWORD ADD CONSTRAINT PK_MAPPING_KEYWORD PRIMARY KEY (
                                                                            NOVEL_ID,
@@ -132,7 +132,7 @@ ALTER TABLE NOVEL_EPISODE ADD CONSTRAINT FK_NOVEL_TO_NOVEL_EPISODE_1 FOREIGN KEY
     )
     REFERENCES NOVEL (
                       NOVEL_ID
-    );
+        );
 
 ALTER TABLE NOVEL_PRICE ADD CONSTRAINT FK_NOVEL_EPISODE_TO_NOVEL_PRICE_1 FOREIGN KEY (
                                                                                       EPISODE_ID
@@ -241,17 +241,42 @@ ALTER TABLE LAST_READ ADD CONSTRAINT FK_USER_TO_LAST_READ_1 FOREIGN KEY (
         );
 ALTER TABLE LAST_READ
     ADD CONSTRAINT FK_NOVEL_EPISODE_TO_LAST_READ_1 FOREIGN KEY (
-                                  EPISODE_ID
+                                                                EPISODE_ID
         )
         REFERENCES NOVEL_EPISODE (
                                   EPISODE_ID
             );
 ALTER TABLE LAST_READ
     ADD CONSTRAINT FK_NOVEL_TO_LAST_READ_1 FOREIGN KEY (
-                                NOVEL_ID
+                                                        NOVEL_ID
         )
         REFERENCES NOVEL (
-                                  NOVEL_ID
+                          NOVEL_ID
             );
 alter table novel_episode
     add CONTENT TEXT null comment '페이지 내용';
+
+CREATE TABLE OWNED_NOVEL
+(
+    OWNED_IDX BIGINT AUTO_INCREMENT COMMENT '최근읽은페이지 아이디' primary key ,
+    USER_ID BIGINT NOT NULL COMMENT '유저 아이디',
+    NOVEL_ID BIGINT NOT NULL COMMENT '소설 아이디',
+    EPISODE_ID BIGINT NOT NULL COMMENT '에피소드 아이디',
+    OWNED_DATE datetime default (now()) COMMENT '소설 소장일'
+);
+
+ALTER TABLE OWNED_NOVEL
+    ADD CONSTRAINT FK_NOVEL_EPISODE_TO_OWNED_NOVEL_1 FOREIGN KEY (
+                                                                NOVEL_ID, EPISODE_ID
+        )
+        REFERENCES NOVEL_EPISODE (
+                                  NOVEL_ID, EPISODE_ID
+);
+
+ALTER TABLE OWNED_NOVEL
+    ADD CONSTRAINT FK_USER_TO_OWNED_NOVEL_1 FOREIGN KEY (
+                                                                  USER_ID
+        )
+        REFERENCES USER (
+                                  USER_ID
+            );

@@ -23,7 +23,7 @@
 
     <insert id="createEpisodeInfo" parameterType="EpisodeInfo">
         INSERT INTO EPISODE_INFO (EPISODE_ID, NOVEL_ID, EPISODE_IMAGE)
-        VALUES (#{episodeId}, #{novelId}, #{episodeImage})
+        VALUES (#{episodeId}, #{novelId}, null)
     </insert>
 
     <update id="updateEpisode" parameterType="NovelEpisode">
@@ -35,7 +35,7 @@
 
     <update id="updateEpisodeImage" parameterType="EpisodeInfo">
         UPDATE EPISODE_INFO SET
-            EPISODE_IMAGE = #{episodeImage}
+            EPISODE_IMAGE = null
         WHERE EPISODE_ID = #{episodeId}
     </update>
 
@@ -48,4 +48,12 @@
         FROM NOVEL_EPISODE
         WHERE EPISODE_ID = #{episodeId}
     </select>
+
+    <insert id="createBookMark" parameterType="LastReadDto">
+        INSERT INTO LAST_READ (
+                      LAST_READ_ID, USER_ID, NOVEL_ID, EPISODE_ID, LAST_READ_PAGE
+         ) VALUES (
+              #{lastReadId}, #{userId}, #{novelId}, #{episodeId}, #{lastReadPage}
+        )
+    </insert>
 </mapper>

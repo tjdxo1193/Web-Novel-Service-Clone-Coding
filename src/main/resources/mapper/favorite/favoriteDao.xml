@@ -15,8 +15,22 @@
         DELETE FROM FAVORITE WHERE NOVEL_ID = #{novelId} AND USER_ID = #{userId}
     </delete>
 
+
+<!--  내가 마지막에 본 장의 번호를 가지고 있어야함.  -->
     <select id="findFavoritesByUserId" resultType="Favorite" parameterType="Long">
-        SELECT USER_ID, NOVEL_ID, THUMB_DATE, THUMB_YN FROM FAVORITE WHERE USER_ID = #{userId}
+        SELECT
+            F.USER_ID
+             , F.NOVEL_ID
+             , THUMB_DATE
+             , THUMB_YN
+        FROM FAVORITE F
+        LEFT JOIN (SELECT
+                       USER_ID, NOVEL_ID, MAX(EPISODE_ID)
+                       FROM LAST_READ
+                       GROUP BY USER_ID, NOVEL_ID
+                       )
+            LR ON F.USER_ID = LR.USER_ID AND F.NOVEL_ID = LR.NOVEL_ID
+        WHERE F.USER_ID = #{userId}
     </select>
 
 </mapper>

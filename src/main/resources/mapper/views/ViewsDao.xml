@@ -8,7 +8,7 @@
         VALUES (#{userId}, #{novelId}, 1, #{viewDate})
     </insert>
 
-    <select id="findOneById" resultType="map">
+    <select id="findOneById" resultType="ViewsDto" parameterType="map">
         SELECT USER_ID, NOVEL_ID, VIEW_COUNT, VIEW_DATE
         FROM VIEWS
         WHERE USER_ID = #{userId}
@@ -19,6 +19,6 @@
         UPDATE VIEWS
         SET VIEW_DATE = #{viewDate}
         WHERE USER_ID = #{userId}
-        AND NOVEL_ID = #{novelId} for
+        AND NOVEL_ID = #{novelId}
     </update>
 </mapper>
