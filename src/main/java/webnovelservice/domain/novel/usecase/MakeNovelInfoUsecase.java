@@ -14,5 +14,9 @@ public class MakeNovelInfoUsecase {
 
     public NovelDetailDto fetchNovelDetail(Long novelId, Long userId) {
         var novelHeader = novelReadService.findNovelDetailByNovelId(novelId, userId);
+        // TODO 값을 넣어야함.
+        return new NovelDetailDto(
+
+        );
     }
 }
