@@ -2,7 +2,6 @@ package webnovelservice.domain.novel.entity;
 
 import lombok.Builder;
 import lombok.Getter;
-import org.apache.commons.lang3.StringUtils;
 import webnovelservice.domain.novel.enums.GenreDiv;
 import webnovelservice.domain.novel.enums.PublicationStatus;
 
@@ -28,7 +27,7 @@ public class Novel {
         this.novelId = novelId;
         this.title = Objects.requireNonNull(title);
         this.author = Objects.requireNonNull(author);
-        this.genre = Objects.requireNonNull(genre);
+        this.genre = Objects.requireNonNullElse(genre, GenreDiv.NONE);
         this.description = Objects.requireNonNull(description);
         this.publicationDate = Objects.requireNonNull(publicationDate);
         this.publicationStatus = Objects.requireNonNullElse(publicationStatus, PublicationStatus.DEFAULT);
@@ -36,12 +35,11 @@ public class Novel {
     }
 
     public void toNovelIdsWithComma(List<Long> novelIds) {
-        var temp = StringUtils.EMPTY;
         if (novelIds.size() != 0) {
             // TODO IN 에 들어갈 형식으로 만들기
             this.novelIds = novelIds.toString();
         } else {
-            this.novelIds = StringUtils.EMPTY;
+            this.novelIds = "";
         }
     }
 }

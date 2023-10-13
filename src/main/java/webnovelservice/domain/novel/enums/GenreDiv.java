@@ -16,7 +16,8 @@ public enum GenreDiv {
     ACTION("액션" , "action"),
     CULT("컬트" , "cult"),
     COMEDY("희극" , "comedy"),
-    ESSAY("에세이" , "essay");
+    ESSAY("에세이" , "essay"),
+    NONE("없음", "none");
 
     private final String koreaName;
     private final String englishName;
