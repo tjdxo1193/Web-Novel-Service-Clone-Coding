@@ -2,7 +2,7 @@ package webnovelservice.domain.episode.application;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
-import webnovelservice.domain.episode.dao.EpisodeDao;
+import webnovelservice.domain.episode.repository.EpisodeDao;
 import webnovelservice.domain.episode.dto.EpisodeCommand;
 import webnovelservice.domain.episode.dto.EpisodeDto;
 import webnovelservice.domain.episode.entity.NovelEpisode;

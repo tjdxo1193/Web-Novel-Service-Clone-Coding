@@ -1,15 +1,17 @@
-package webnovelservice.domain.episode.dao;
+package webnovelservice.domain.episode.repository;
 
-import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
+import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.stereotype.Repository;
 import webnovelservice.domain.episode.domain.bookmark.dto.LastReadDto;
 import webnovelservice.domain.episode.entity.EpisodeInfo;
 import webnovelservice.domain.episode.entity.NovelEpisode;
+import webnovelservice.domain.novel.entity.Novel;
 
-@Mapper
-public interface EpisodeDao {
+@Repository
+public class EpisodeRepository {
 
-    Long createEpisode(NovelEpisode episode);
+/*    Long createEpisode(NovelEpisode episode);
 
     NovelEpisode findEpisodeByNovelIdAndepisodeId(@Param("novelId") Long novelId, @Param("episodeId") Long episodeId);
 
@@ -19,5 +21,5 @@ public interface EpisodeDao {
 
     Integer updateEpisode(NovelEpisode episode);
 
-    Integer createBookMark(LastReadDto lastReadDto);
+    Integer createBookMark(LastReadDto lastReadDto);*/
 }

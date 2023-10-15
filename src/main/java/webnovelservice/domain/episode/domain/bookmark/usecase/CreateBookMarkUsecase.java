@@ -2,7 +2,7 @@ package webnovelservice.domain.episode.domain.bookmark.usecase;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
-import webnovelservice.domain.episode.dao.EpisodeDao;
+import webnovelservice.domain.episode.repository.EpisodeDao;
 import webnovelservice.domain.episode.domain.bookmark.dto.LastReadDto;
 
 @Service

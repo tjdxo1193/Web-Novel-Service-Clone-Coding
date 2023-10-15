@@ -19,6 +19,15 @@ spring:
     url: jdbc:mysql://localhost:3306/NOVEL_SERVICE?rewriteBatchedStatements=true&characterEncoding=UTF-8&serverTimezone=Asia/Seoul
     username: root
     password: zz12zz
+  jpa:
+      database-platform: org.hibernate.dialect.MySQL8Dialect
+      hibernate:
+        ddl-auto: create
+      properties:
+        hibernate:
+          format_sql: true
+          show_sql: true
+      defer-datasource-initialization: false
 server:
   servlet:
     session:
@@ -39,6 +48,10 @@ server:
       enabled: false
   tomcat:
     additional-tld-skip-patterns: "*.jar"
+
+logging:
+  level:
+    org.hibernate.SQL: debug
 
 mybatis:
   mapper-locations: mapper/**/*.xml
